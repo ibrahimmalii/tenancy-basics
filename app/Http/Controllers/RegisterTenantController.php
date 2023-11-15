@@ -18,14 +18,9 @@ class RegisterTenantController extends Controller
     public function store(RegisterTenantRequest $request)
     {
         $validated = $request->validated();
-        $tenant = Tenant::create(array_merge(
-            $validated,
-            [
-                'id' => $validated['company']
-            ]
-        ));
-
+        $tenant = Tenant::create($validated);
         $tenant->createDomain(['domain' => $request->domain]);
 
+        redirect(tenant_route($tenant->domains()->first()->domain, 'dashboard'));
     }
 }

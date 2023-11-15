@@ -42,4 +42,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected static function booted(): void
+    {
+        parent::booted();
+//        static::creating(function($user) {
+//            $user->password = bcrypt($user->password);
+//        });
+    }
+
+    public function setPasswordAttribute($password): void
+    {
+        $password = bcrypt($password);
+        $this->attributes['password'] = $password;
+    }
 }
